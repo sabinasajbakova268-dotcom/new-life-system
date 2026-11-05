@@ -2,146 +2,99 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#10091c">
-<meta name="description" content="NEW LIFE SYSTEM — твоя новая жизнь начинается здесь">
-<link rel="manifest" href="manifest.webmanifest">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10091d">
 <title>NEW LIFE SYSTEM</title>
+<link rel="manifest" href="manifest.webmanifest">
 <style>
-:root{--bg:#0b0712;--panel:#171022;--panel2:#211431;--violet:#a56cff;--bright:#d6b5ff;--silver:#c9bfdc;--muted:#9b8daa;--line:rgba(190,145,255,.48);--gold:#e6c6ff}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#382052 0,#130c20 40%,#09060f 100%);color:#f3ecff;font-family:Georgia,'Times New Roman',serif;min-height:100vh}
-button{font:inherit;color:inherit;cursor:pointer} .hidden{display:none!important}
-#splash,#welcome{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;background:radial-gradient(circle at center,#38204f 0,#130c20 48%,#07050c 100%)}
-#splash .crest{width:112px;height:112px;border:1px solid #d8c3ff;transform:rotate(45deg);display:grid;place-items:center;margin:0 auto 34px;box-shadow:0 0 28px #9e5cff66,inset 0 0 24px #9e5cff33;position:relative}
-#splash .crest:before,#splash .crest:after{content:"";position:absolute;inset:8px;border:1px solid #9d75ca}
-#splash .crest:after{inset:-9px;border:1px solid #735091}
-#splash .crest span{transform:rotate(-45deg);font-size:42px;color:#e8d8ff;text-shadow:0 0 18px #b27aff}
-.brand{font-size:clamp(26px,7vw,38px);letter-spacing:.18em;line-height:1.15;text-shadow:0 0 18px #a96aff}
-.sub{font:11px Arial,sans-serif;letter-spacing:.32em;color:#c6a9e8;margin-top:12px}
-.loading{width:190px;height:2px;background:#392747;margin:34px auto 12px;overflow:hidden}.loading i{display:block;height:100%;width:0;background:#d6b5ff;box-shadow:0 0 12px #bd8cff;animation:load 1.8s ease forwards}
-@keyframes load{to{width:100%}}
-#welcome{z-index:19;background:linear-gradient(145deg,#12091eeb,#27143de8),radial-gradient(circle at 80% 20%,#8a55b5,transparent 40%)}
-.welcome-card{max-width:420px;width:100%;border:1px solid #a987d4;padding:38px 24px;background:linear-gradient(145deg,#28173ad9,#100a1bfa);box-shadow:0 0 50px #9e5cff25,inset 0 0 35px #a56cff12;position:relative}
-.welcome-card:before{content:"✧  ✦  ✧";display:block;color:#d7baff;letter-spacing:18px;margin-bottom:25px}
-h1,h2,h3,p{margin-top:0}h1{font-size:29px;letter-spacing:.12em;margin-bottom:8px} .welcome-card p{color:#c2b1d2;font:13px Arial,sans-serif;letter-spacing:.08em}
-.action{border:1px solid #bd96ed;background:linear-gradient(180deg,#7545a5,#3b2059);padding:13px 24px;letter-spacing:.1em;margin-top:24px;box-shadow:0 0 18px #9e5cff35}
-#app{max-width:1100px;margin:auto;padding:18px 14px 100px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-.logo{display:flex;align-items:center;gap:11px}.mini-crest{width:39px;height:39px;border:1px solid #c4a3eb;transform:rotate(45deg);display:grid;place-items:center;box-shadow:0 0 15px #9c5de966}.mini-crest span{transform:rotate(-45deg);font-size:20px}
-.logo strong{display:block;font-size:17px;letter-spacing:.14em}.logo small{color:#bda7d1;font:9px Arial;letter-spacing:.18em}
-.top-actions{display:flex;gap:8px}.icon-btn{width:38px;height:38px;border:1px solid var(--line);background:#21152eaa;color:#decaff;font-size:17px}
-.panel{background:linear-gradient(145deg,rgba(42,27,58,.94),rgba(15,10,23,.97));border:1px solid var(--line);box-shadow:inset 0 0 24px #a56cff0c,0 8px 26px #0006;position:relative;padding:15px;margin-bottom:14px}
-.panel:before,.panel:after{content:"";position:absolute;width:14px;height:14px;border-color:#d3b5ff;border-style:solid;opacity:.8}.panel:before{top:4px;left:4px;border-width:1px 0 0 1px}.panel:after{bottom:4px;right:4px;border-width:0 1px 1px 0}
-.profile{display:grid;grid-template-columns:88px 1fr auto;gap:14px;align-items:center}
-.avatar{width:84px;height:84px;border:1px solid #c9a7f4;background:radial-gradient(circle,#67418a,#21132f 65%,#100b18);display:grid;place-items:center;font-size:37px;clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%);box-shadow:0 0 18px #9d61d955}
-.player-name{font-size:20px;color:#f3eaff;margin-bottom:5px}.meta{font:11px Arial;color:#bba9cb;line-height:1.7}.rank{color:#d6b5ff}.level{font-size:12px;color:#e5d6f7;margin-top:7px}
-.expbar{height:6px;background:#090610;border:1px solid #58406f;margin-top:6px;max-width:330px}.expbar span{display:block;height:100%;width:24%;background:linear-gradient(90deg,#7542ad,#d6b5ff);box-shadow:0 0 10px #b27aff}
-.crest-big{font-size:34px;color:#d8b8ff;text-shadow:0 0 20px #b06cff;margin:0 8px}
-.resource-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.resource{display:flex;align-items:center;justify-content:space-between}.resource b{font-size:19px;color:#e4ceff}.resource small{display:block;color:#b7a5c8;font:10px Arial;letter-spacing:.12em}.plus{border:1px solid #9f77c5;background:#352044;padding:5px 10px;color:#e9d7ff}
-.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;color:#e6d3ff;font-size:17px;letter-spacing:.05em}.section-title small{font:10px Arial;color:#a98bc4}
-.dashboard{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(250px,.8fr);gap:14px}
-.stat-wrap{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:10px}
-.hex-chart{width:100%;max-width:260px;margin:auto;filter:drop-shadow(0 0 8px #a56cff55)}
-.stat-list{display:grid;gap:8px}.stat-item{border:1px solid #654783;background:#1c1229;padding:8px 10px;font:11px Arial;color:#cbb9dd;display:flex;justify-content:space-between;gap:8px}.stat-item b{color:#f1e7ff}
-.analysis{font:12px Arial;color:#bca9ce;line-height:1.5;margin:12px 0 0;padding:10px;border-left:2px solid #a56cff;background:#130d1d}
-.task{border:1px solid #62437d;background:linear-gradient(100deg,#261637,#171020);padding:12px;margin-top:9px;display:flex;gap:12px;align-items:center}
-.task-symbol{color:#d7b6ff;font-size:24px}.task h3{font-size:15px;margin:0 0 5px}.task p{font:11px Arial;color:#b9a8c8;margin:0 0 7px}.reward{font:10px Arial;color:#d8b9ff}.task button{margin-left:auto;white-space:nowrap;border:1px solid #a77bd1;background:#3a2251;padding:8px 10px;font:11px Arial}
-.quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.quick{min-height:92px;background:linear-gradient(145deg,#29183b,#130d1e);border:1px solid #76539a;position:relative;padding:13px 7px;text-align:center;box-shadow:inset 0 0 18px #a56cff12}.quick:before{content:"";position:absolute;inset:4px;border:1px solid #65457f;pointer-events:none}.quick .qicon{font-size:22px;color:#d9bdff}.quick strong{display:block;font-size:12px;margin-top:7px}.quick small{font:9px Arial;color:#aa97bc}
-.side-stat{display:grid;grid-template-columns:1fr 1fr;gap:8px}.side-stat .panel{margin:0;padding:12px}.side-stat strong{font-size:20px;color:#e2caff}.side-stat small{display:block;font:10px Arial;color:#ad9cbd;margin-top:4px}
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:10;background:#100a19f2;border-top:1px solid #77539a;display:flex;justify-content:center;gap:0;padding:8px 3px calc(8px + env(safe-area-inset-bottom));backdrop-filter:blur(14px)}
-.nav button{flex:1;max-width:110px;border:0;background:none;color:#9f8caf;font:9px Arial;padding:5px 2px}.nav button span{display:block;font-size:19px;margin-bottom:4px}.nav button.active{color:#e3caff;text-shadow:0 0 12px #b77cff}
-.page{min-height:65vh}.page h2{font-size:22px;color:#e6d3ff}.placeholder{padding:25px 10px;text-align:center;color:#bba9cb;font:13px Arial;line-height:1.7}
-@media(max-width:650px){#app{padding:13px 10px 94px}.profile{grid-template-columns:70px 1fr auto;gap:10px}.avatar{width:68px;height:68px;font-size:29px}.player-name{font-size:17px}.crest-big{font-size:25px;margin:0}.dashboard{grid-template-columns:1fr}.stat-wrap{grid-template-columns:1fr 1fr}.hex-chart{max-width:205px}.quick-grid{gap:6px}.quick{min-height:84px}.resource-row{gap:7px}.panel{padding:13px}.task{gap:8px}.task button{padding:7px}.side-stat{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:360px){.stat-wrap{grid-template-columns:1fr}.hex-chart{max-width:230px}.profile{grid-template-columns:58px 1fr}.avatar{width:56px;height:56px}.crest-big{display:none}.quick strong{font-size:11px}}
+:root{--bg:#090611;--panel:#151022;--panel2:#1c142b;--line:#65458b;--violet:#a879e8;--bright:#d8b8ff;--muted:#a99ab9;--silver:#d8d1e4;--gold:#d9c18c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#302044 0,#100a1b 43%,#08050e 100%);color:#eee8f7;font:14px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+button,input{font:inherit}button{cursor:pointer;color:inherit}.app{max-width:760px;margin:auto;padding:16px 14px 92px}.top{display:flex;align-items:center;justify-content:space-between;margin:5px 0 18px}.brand{letter-spacing:.18em;font-size:13px;color:#e6d5ff}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.24em;margin-top:2px}.emblem{width:42px;height:42px;border:1px solid #9e78c6;transform:rotate(45deg);display:grid;place-items:center;box-shadow:0 0 18px #8c58c966}.emblem span{transform:rotate(-45deg);font-size:20px;color:#e6caff}
+h1{font-size:22px;font-weight:500;letter-spacing:.08em;margin:0 0 12px}h2{font-size:15px;font-weight:600;letter-spacing:.08em;color:#e5d4fa;margin:0 0 12px}.muted{color:var(--muted)}.tiny{font-size:11px;color:var(--muted)}
+.panel{background:linear-gradient(145deg,#21172fdd,#110c1ddd);border:1px solid #684b86;border-radius:15px;padding:15px;margin:12px 0;box-shadow:inset 0 0 18px #9d6cd00b,0 8px 25px #0005;position:relative}.panel:before{content:"";position:absolute;inset:4px;border:1px solid #ffffff0b;border-radius:11px;pointer-events:none}
+.row{display:flex;gap:12px;align-items:center}.between{justify-content:space-between}.grow{flex:1;min-width:0}.avatar{width:66px;height:66px;border-radius:50%;border:2px solid #a77bd1;object-fit:cover;background:#281a39;display:grid;place-items:center;font-size:25px;color:#d6baff}.name{font-size:18px;overflow-wrap:anywhere}.tag{font-size:10px;letter-spacing:.12em;color:#c7a6ef;border:1px solid #684b86;border-radius:20px;padding:3px 8px;display:inline-block;margin-top:4px}
+.statline{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin:10px 0 5px}.bar{height:7px;border-radius:10px;background:#08050e;overflow:hidden;border:1px solid #49345e}.bar i{display:block;height:100%;background:linear-gradient(90deg,#7143a7,#d5b4ff);box-shadow:0 0 12px #b47afc}
+.currency{display:flex;gap:8px}.currency div{flex:1;background:#0e0918;border:1px solid #4b3564;border-radius:10px;padding:9px;text-align:center}.currency b{display:block;font-size:18px;color:#e5caff}.currency small{color:var(--muted);font-size:10px;letter-spacing:.1em}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat{background:#100b19;border:1px solid #49335e;padding:10px;border-radius:10px}.stat b{display:block;font-size:18px;color:#e2c7ff}.stat span{font-size:10px;color:var(--muted)}
+.btn{background:linear-gradient(135deg,#6e4598,#39234f);border:1px solid #b28ad9;border-radius:9px;padding:9px 13px;color:white}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.secondary{background:#171020;border-color:#59416f}.btn.danger{background:#3a1828;border-color:#8c4b67}.btn.full{width:100%}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}.tab{background:#130d20;border:1px solid #47315d;border-radius:9px;padding:9px 4px;color:#b9a9ca;font-size:11px}.tab.active{border-color:#b58be1;color:#f1dcff;background:#291b3b;box-shadow:0 0 13px #9256c933}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#0b0713ed;backdrop-filter:blur(12px);border-top:1px solid #50376b;padding:8px max(10px,calc((100vw - 740px)/2)) calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,1fr);gap:5px;z-index:5}.bottom button{background:none;border:0;color:#a99ab9;font-size:10px;padding:5px 0}.bottom button span{display:block;font-size:18px;margin-bottom:2px}.bottom button.active{color:#e0c2ff}
+.task,.item{background:#100b19;border:1px solid #49345f;border-radius:11px;padding:12px;margin:9px 0}.task h3,.item h3{font-size:14px;margin:0 0 4px}.reward{color:#d7b4ff;font-size:11px}.pill{font-size:10px;color:#c6b1dc;border:1px solid #604778;border-radius:20px;padding:3px 7px}.task.done{opacity:.6;border-color:#4d775f}.task.done h3{text-decoration:line-through}
+.field{display:block;margin:10px 0;color:var(--muted);font-size:12px}.field input{display:block;width:100%;margin-top:5px;background:#0b0712;border:1px solid #62477c;border-radius:8px;color:white;padding:10px}.notice{padding:10px;border-left:2px solid #a77bd1;background:#170f23;color:#c9b9d8;font-size:12px;margin:10px 0}.hidden{display:none!important}.hexwrap{display:flex;justify-content:center;padding:8px 0}.hexwrap svg{width:min(100%,310px);height:auto}.empty{text-align:center;color:var(--muted);padding:25px 8px}.foot{text-align:center;color:#746582;font-size:10px;margin:25px 0}
+@media(min-width:600px){.grid2{grid-template-columns:repeat(3,1fr)}.tabs{grid-template-columns:repeat(7,1fr)}}
 </style>
 </head>
 <body>
-<section id="splash">
- <div><div class="crest"><span>✧</span></div><div class="brand">NEW LIFE<br>SYSTEM</div><div class="sub">SYSTEM INITIALIZING</div><div class="loading"><i></i></div><div class="sub">PLEASE WAIT, PLAYER</div></div>
-</section>
-<section id="welcome" class="hidden">
- <div class="welcome-card"><div class="brand">NLS</div><h1>WELCOME, PLAYER</h1><p>ТВОЯ НОВАЯ ЖИЗНЬ НАЧИНАЕТСЯ ЗДЕСЬ</p><button class="action" id="enter">ВОЙТИ В СИСТЕМУ　✦</button></div>
-</section>
-<main id="app" class="hidden">
- <header class="top">
-  <div class="logo"><div class="mini-crest"><span>✧</span></div><div><strong>NEW LIFE SYSTEM</strong><small>НАЧНИ НОВУЮ ЖИЗНЬ</small></div></div>
-  <div class="top-actions"><button class="icon-btn" aria-label="Уведомления">♧</button><button class="icon-btn" aria-label="Настройки" data-page="settings">⚙</button></div>
- </header>
- <div id="content">
-  <section class="panel profile">
-   <div class="avatar">✦</div><div><div class="player-name">Сабина-ним</div><div class="meta">ID: #NLS0001<br>Ранг: <span class="rank">F — Новичок</span></div><div class="level">УРОВЕНЬ 1　·　EXP 0 / 100</div><div class="expbar"><span style="width:0%"></span></div></div><div class="crest-big">✥</div>
-  </section>
-  <section class="resource-row">
-   <div class="panel resource"><div><small>КРИСТАЛЛЫ СИСТЕМЫ</small><b>✧ CR　0</b></div><button class="plus" data-page="shop">＋</button></div>
-   <div class="panel resource"><div><small>ОПЫТ ИГРОКА</small><b>✦ XP　0</b></div><button class="plus" data-page="tasks">→</button></div>
-  </section>
-  <div class="dashboard">
-   <div>
-    <section class="panel">
-     <div class="section-title">Статистика игрока <small>ШЕСТЬ ПАРАМЕТРОВ</small></div>
-     <div class="stat-wrap">
-      <svg class="hex-chart" viewBox="0 0 260 230" role="img" aria-label="Шестиугольник характеристик игрока">
-       <g transform="translate(130 112)" fill="none" stroke="#78549a" stroke-width="1">
-        <polygon points="0,-88 76,-44 76,44 0,88 -76,44 -76,-44"/><polygon points="0,-66 57,-33 57,33 0,66 -57,33 -57,-33"/><polygon points="0,-44 38,-22 38,22 0,44 -38,22 -38,-22"/><polygon points="0,-22 19,-11 19,11 0,22 -19,11 -19,-11"/><path d="M0,-88V88M-76,-44L76,44M76,-44L-76,44"/>
-       </g>
-       <polygon points="130,112 130,112 130,112 130,112 130,112 130,112" fill="#a56cff55" stroke="#d4b2ff" stroke-width="2"/>
-       <g fill="#d8c2ef" font-size="10" text-anchor="middle" font-family="Arial"><text x="130" y="12">ИНТЕЛЛЕКТ</text><text x="221" y="72">СИЛА</text><text x="216" y="173">ВЫНОСЛИВОСТЬ</text><text x="130" y="226">ЛОВКОСТЬ</text><text x="43" y="173">ДИСЦИПЛИНА</text><text x="39" y="72">КОНЦЕНТРАЦИЯ</text></g>
-       <g fill="#d9b9ff"><circle cx="130" cy="24" r="3"/><circle cx="206" cy="68" r="3"/><circle cx="206" cy="156" r="3"/><circle cx="130" cy="200" r="3"/><circle cx="54" cy="156" r="3"/><circle cx="54" cy="68" r="3"/></g>
-      </svg>
-      <div class="stat-list">
-       <div class="stat-item">Интеллект <b>—</b></div><div class="stat-item">Сила <b>—</b></div><div class="stat-item">Выносливость <b>—</b></div><div class="stat-item">Ловкость <b>—</b></div><div class="stat-item">Дисциплина <b>—</b></div><div class="stat-item">Концентрация <b>—</b></div>
-      </div>
-     </div>
-     <div class="analysis">✧ Анализ сильных сторон появится после первичной оценки характеристик. Начальные значения пока не назначены.</div>
-    </section>
-    <section class="panel">
-     <div class="section-title">Активные задания <small>НАЧАЛО ПУТИ</small></div>
-     <div class="task"><div class="task-symbol">✧</div><div><h3>Изучить систему</h3><p>Откройте разделы NLS и ознакомьтесь с интерфейсом.</p><div class="reward">НАГРАДА: 5 XP　·　5 CR</div></div><button data-page="tasks">ОТКРЫТЬ</button></div>
-     <div class="task"><div class="task-symbol">◇</div><div><h3>Первый шаг</h3><p>Выберите небольшое полезное действие на сегодня.</p><div class="reward">НАГРАДА: 5 XP　·　5 CR</div></div><button data-page="tasks">ОТКРЫТЬ</button></div>
-    </section>
-   </div>
-   <aside>
-    <section class="panel"><div class="section-title">Разделы системы <small>ДОСТУП</small></div><div class="quick-grid">
-     <button class="quick" data-page="tasks"><span class="qicon">♜</span><strong>Задания</strong><small>ТВОИ ЦЕЛИ</small></button>
-     <button class="quick" data-page="shop"><span class="qicon">✧</span><strong>Магазин</strong><small>НАГРАДЫ</small></button>
-     <button class="quick" data-page="chat"><span class="qicon">⌁</span><strong>Чат</strong><small>СВЯЗЬ</small></button>
-     <button class="quick" data-page="inventory"><span class="qicon">♢</span><strong>Инвентарь</strong><small>ПРЕДМЕТЫ</small></button>
-     <button class="quick" data-page="profile"><span class="qicon">♙</span><strong>Профиль</strong><small>ИГРОК</small></button>
-     <button class="quick" data-page="stats"><span class="qicon">⬡</span><strong>Статистика</strong><small>РАЗВИТИЕ</small></button>
-    </div></section>
-    <div class="side-stat"><section class="panel"><strong>F</strong><small>ТЕКУЩИЙ РАНГ</small></section><section class="panel"><strong>0 / 50</strong><small>ДОСТИЖЕНИЯ</small></section></div>
-    <section class="panel" style="margin-top:14px"><div class="section-title">Сообщение системы</div><div class="placeholder">✦ Добро пожаловать, игрок.<br>Твоя новая жизнь начинается прямо сейчас.</div></section>
-   </aside>
-  </div>
- </div>
-</main>
-<nav class="nav hidden" id="nav">
- <button class="active" data-page="home"><span>⌂</span>Главная</button><button data-page="tasks"><span>♜</span>Задания</button><button data-page="shop"><span>✧</span>Магазин</button><button data-page="inventory"><span>♢</span>Инвентарь</button><button data-page="menu"><span>☷</span>Меню</button>
+<div class="app">
+<header class="top"><div class="brand">NEW LIFE SYSTEM<small>PERSONAL SYSTEM · V0.3</small></div><div class="emblem"><span>✦</span></div></header>
+<main id="view"></main>
+<div class="foot">NLS · LOCAL PERSONAL VERSION · YOUR PROGRESS STAYS ON THIS DEVICE</div>
+</div>
+<nav class="bottom" id="nav">
+<button data-page="home" class="active"><span>⌂</span>Главная</button>
+<button data-page="tasks"><span>◇</span>Задания</button>
+<button data-page="shop"><span>♜</span>Магазин</button>
+<button data-page="inventory"><span>◈</span>Инвентарь</button>
+<button data-page="profile"><span>♙</span>Профиль</button>
 </nav>
 <script>
-const splash=document.getElementById('splash'),welcome=document.getElementById('welcome'),app=document.getElementById('app'),nav=document.getElementById('nav'),content=document.getElementById('content');
-setTimeout(()=>{splash.classList.add('hidden');welcome.classList.remove('hidden')},2100);
-document.getElementById('enter').addEventListener('click',()=>{welcome.classList.add('hidden');app.classList.remove('hidden');nav.classList.remove('hidden')});
-const home=content.innerHTML;
-const pages={
-tasks:['Задания','Здесь будут ежедневные, еженедельные и особые задания. Выполнение и отчётность подключим следующим этапом.'],
-shop:['Магазин','Витрина цифровых предметов и наград. Покупки за CR будут подключены после настройки экономики.'],
-chat:['Чат системы','Локальные сообщения системы. Общение с другими игроками появится после подключения серверной части.'],
-inventory:['Инвентарь','Здесь будут храниться аксессуары, артефакты, коллекционные и расходные предметы.'],
-profile:['Профиль игрока','Персональные данные, ранг, уровень, титул и история развития.'],
-stats:['Статистика','Шесть основных характеристик. Значения не назначены заранее — сначала проведём оценку.'],
-settings:['Настройки','Язык, оформление, уведомления и параметры приложения.'],
-menu:['Меню системы','Дополнительные разделы NLS: календарь, обучение, профессия, библиотека, архив и настройки.']
+const KEY='nls_personal_v03';
+const defaults={
+ name:'Игрок',id:'NLS-000001',avatar:'',level:1,xp:0,cr:0,statPoints:0,
+ stats:{strength:0,intelligence:0,agility:0,endurance:0,discipline:0,concentration:0},
+ completed:[],inventory:[],history:[],settings:{language:'Русский',theme:'Фиолетовый'},lastDaily:''
 };
-function openPage(key){
- document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===key));
- if(key==='home'){content.innerHTML=home;return}
- const p=pages[key]||pages.menu;
- content.innerHTML=`<section class="panel page"><div class="section-title">NLS　/　${p[0].toUpperCase()}</div><h2>${p[0]}</h2><div class="placeholder">✧ ${p[1]}</div><button class="action" id="back">← НА ГЛАВНУЮ</button></section>`;
- document.getElementById('back').addEventListener('click',()=>openPage('home'));
-}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)openPage(b.dataset.page)});
-if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+let state;
+try{state={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')};state.stats={...defaults.stats,...(state.stats||{})};state.settings={...defaults.settings,...(state.settings||{})}}catch(e){state=structuredClone(defaults)}
+let page='home';
+const tasks=[
+{id:'t1',name:'Навести порядок на рабочем месте',desc:'Удели 5 минут своему пространству.',xp:3,cr:2,cat:'Ежедневное'},
+{id:'t2',name:'Выпить стакан воды',desc:'Небольшая забота о себе.',xp:2,cr:1,cat:'Ежедневное'},
+{id:'t3',name:'Прочитать или изучить что-то новое',desc:'10 минут обучения.',xp:4,cr:2,cat:'Ежедневное'},
+{id:'t4',name:'Прогулка или лёгкая разминка',desc:'Выбери комфортную активность на 5–10 минут.',xp:4,cr:3,cat:'Ежедневное'},
+{id:'t5',name:'Записать план на завтра',desc:'Выдели три главных дела.',xp:3,cr:2,cat:'Ежедневное'}
+];
+const goods=[
+{id:'p1',name:'Кристалл отдыха',desc:'Однократно отмечает одно обычное задание как пропущенное без штрафа. В этой версии — тестовый предмет.',price:12,rarity:'Редкий',kind:'consumable'},
+{id:'p2',name:'Лунный осколок',desc:'Коллекционный предмет системы.',price:8,rarity:'Обычный',kind:'collectible'},
+{id:'p3',name:'Печать концентрации',desc:'Артефакт развития. Пока коллекционный; эффекты добавим позднее.',price:20,rarity:'Эпический',kind:'artifact'},
+{id:'p4',name:'Свиток опыта',desc:'Используй, чтобы получить 5 XP.',price:10,rarity:'Необычный',kind:'consumable',effect:'xp'}
+];
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function xpNeed(l){return Math.round(25+Math.pow(l,1.55)*12)}
+function rank(l){return l>=90?'SSS — Гранд-мастер':l>=80?'SS — Мастер':l>=70?'S — Эксперт':l>=55?'A — Высокий':l>=40?'B — Продвинутый':l>=25?'C — Развивающийся':l>=15?'D — Ученик':l>=5?'E — Начальный':'F — Новичок'}
+function addXP(n){if(state.level>=100)return;state.xp+=n;while(state.level<100&&state.xp>=xpNeed(state.level)){state.xp-=xpNeed(state.level);state.level++;state.statPoints+=2;toast('Уровень повышен! Получено 2 очка характеристик.')}if(state.level===100)state.xp=0;save()}
+function toast(s){const el=document.getElementById('toast');if(el){el.textContent=s;el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),2400)}}
+function head(title,sub=''){return `<h1>${title}</h1>${sub?`<div class="muted">${sub}</div>`:''}`}
+function bar(){let n=xpNeed(state.level);return `<div class="statline"><span>ОПЫТ · УРОВЕНЬ ${state.level}</span><span>${state.xp} / ${n} XP</span></div><div class="bar"><i style="width:${Math.min(100,state.xp/n*100)}%"></i></div>`}
+function avatar(){return state.avatar?`<img class="avatar" src="${state.avatar}" alt="Аватар">`:`<div class="avatar">✦</div>`}
+function radar(){let vals=Object.values(state.stats),labels=['СИЛА','ИНТЕЛЛЕКТ','ЛОВКОСТЬ','ВЫНОСЛИВОСТЬ','ДИСЦИПЛИНА','КОНЦЕНТРАЦИЯ'];let cx=150,cy=130,r=92;let pts=vals.map((v,i)=>{let a=-Math.PI/2+i*Math.PI/3,rr=r*Math.min(100,v)/100;return `${cx+rr*Math.cos(a)},${cy+rr*Math.sin(a)}`}).join(' ');let rings=[25,50,75,100].map(k=>`<polygon points="${labels.map((_,i)=>{let a=-Math.PI/2+i*Math.PI/3;return `${cx+r*k/100*Math.cos(a)},${cy+r*k/100*Math.sin(a)}`}).join(' ')}" fill="none" stroke="#59416e" stroke-width="1"/>`).join('');let labs=labels.map((l,i)=>{let a=-Math.PI/2+i*Math.PI/3;return `<text x="${cx+115*Math.cos(a)}" y="${cy+115*Math.sin(a)+4}" fill="#bca8d0" font-size="9" text-anchor="middle">${l}</text>`}).join('');return `<div class="hexwrap"><svg viewBox="0 0 300 260">${rings}${labels.map((_,i)=>{let a=-Math.PI/2+i*Math.PI/3;return `<line x1="${cx}" y1="${cy}" x2="${cx+r*Math.cos(a)}" y2="${cy+r*Math.sin(a)}" stroke="#59416e"/>`}).join('')}<polygon points="${pts}" fill="#a879e8" fill-opacity=".28" stroke="#d8b8ff" stroke-width="2"/>${labs}</svg></div>`}
+function home(){return `${head('ГЛАВНАЯ','Добро пожаловать в твою личную систему.') }<section class="panel"><div class="row">${avatar()}<div class="grow"><div class="name">${esc(state.name)}</div><div class="tiny">${esc(state.id)}</div><span class="tag">${rank(state.level)}</span></div><span class="pill">LVL ${state.level}</span></div>${bar()}<div class="currency" style="margin-top:14px"><div><b>${state.xp}</b><small>XP</small></div><div><b>${state.cr}</b><small>КРЕДИТЫ CR</small></div><div><b>${state.statPoints}</b><small>ОЧКИ</small></div></div></section><section class="panel"><h2>ХАРАКТЕРИСТИКИ</h2>${radar()}<div class="tiny" style="text-align:center">Очки характеристик можно распределять в разделе «Статистика».</div></section><section class="panel"><div class="row between"><h2>ЗАДАНИЯ НА СЕГОДНЯ</h2><button class="btn secondary" onclick="go('tasks')">Все задания</button></div>${tasks.filter(t=>!state.completed.includes(t.id)).slice(0,2).map(taskCard).join('')||'<div class="empty">На сегодня всё выполнено.</div>'}</section><div id="toast" class="notice hidden"></div>`}
+function taskCard(t){let done=state.completed.includes(t.id);return `<div class="task ${done?'done':''}"><div class="row between"><h3>${esc(t.name)}</h3><span class="pill">${t.cat}</span></div><div class="tiny">${esc(t.desc)}</div><div class="row between" style="margin-top:10px"><span class="reward">+${t.xp} XP · +${t.cr} CR</span><button class="btn ${done?'secondary':''}" ${done?'disabled':''} onclick="completeTask('${t.id}')">${done?'Выполнено':'Выполнить'}</button></div></div>`}
+function taskPage(){return `${head('ЗАДАНИЯ','Выполняй реальные небольшие действия и получай награды.') }<div class="notice">Задания в этой версии — стартовый набор. Отметка «Выполнить» фиксирует выполнение локально на этом устройстве.</div><section class="panel"><div class="row between"><h2>ЕЖЕДНЕВНЫЕ</h2><span class="pill">${state.completed.length}/${tasks.length}</span></div>${tasks.map(taskCard).join('')}<button class="btn secondary full" onclick="resetDaily()">Сбросить отметки заданий</button></section><div id="toast" class="notice hidden"></div>`}
+function shop(){return `${head('МАГАЗИН','Приобретай цифровые предметы за CR.') }<div class="currency"><div><b>${state.cr}</b><small>ТВОЙ БАЛАНС · CR</small></div></div><section class="panel">${goods.map(g=>`<div class="item"><div class="row between"><h3>${g.name}</h3><span class="pill">${g.rarity}</span></div><div class="tiny">${g.desc}</div><div class="row between" style="margin-top:10px"><span class="reward">${g.price} CR</span><button class="btn" onclick="buy('${g.id}')">Купить</button></div></div>`).join('')}</section><div id="toast" class="notice hidden"></div>`}
+function inventory(){let items=state.inventory;return `${head('ИНВЕНТАРЬ','Твои приобретённые предметы и коллекция.') }<section class="panel">${items.length?items.map((it,i)=>`<div class="item"><div class="row between"><h3>${esc(it.name)}</h3><span class="pill">${esc(it.rarity)}</span></div><div class="tiny">${esc(it.desc)}</div><div class="row between" style="margin-top:9px"><span class="tiny">Количество: ${it.qty}</span>${it.kind==='consumable'?`<button class="btn" onclick="useItem('${it.id}')">Использовать</button>`:''}</div></div>`).join(''):'<div class="empty">Инвентарь пока пуст.<br>Загляни в магазин за первым предметом.</div>'}</section><div id="toast" class="notice hidden"></div>`}
+function profile(){return `${head('ПРОФИЛЬ','Персональные данные игрока.') }<section class="panel"><div class="row">${avatar()}<div class="grow"><div class="name">${esc(state.name)}</div><div class="tiny">${esc(state.id)}</div><span class="tag">${rank(state.level)}</span></div></div><label class="field">Имя игрока<input id="nameInput" maxlength="28" value="${esc(state.name)}"></label><label class="field">ID игрока<input id="idInput" maxlength="24" value="${esc(state.id)}"></label><label class="field">Фотография профиля<input id="photoInput" type="file" accept="image/*"></label><button class="btn full" onclick="saveProfile()">Сохранить профиль</button><div class="tiny" style="margin-top:8px">Фотография хранится только в локальных данных этого браузера.</div></section><section class="panel"><h2>УРОВЕНЬ И РАНГ</h2><div class="row between"><span>Уровень</span><b>${state.level} / 100</b></div><div class="row between"><span>Ранг</span><b>${rank(state.level)}</b></div>${bar()}</section><div id="toast" class="notice hidden"></div>`}
+function statsPage(){let names={strength:'Сила',intelligence:'Интеллект',agility:'Ловкость',endurance:'Выносливость',discipline:'Дисциплина',concentration:'Концентрация'};return `${head('СТАТИСТИКА','Развивай характеристики, распределяя заработанные очки.') }<div class="notice">За каждый новый уровень начисляется 2 очка. Начальные значения оставлены нулевыми — ты сама решаешь, куда направить развитие.</div><section class="panel"><div class="row between"><h2>ДОСТУПНО ОЧКОВ</h2><b style="color:#e0c2ff;font-size:22px">${state.statPoints}</b></div>${Object.entries(names).map(([k,n])=>`<div class="row between stat" style="margin:7px 0"><div><b>${state.stats[k]}</b><span>${n}</span></div><button class="btn secondary" ${state.statPoints<1||state.stats[k]>=100?'disabled':''} onclick="allocate('${k}')">+1</button></div>`).join('')}</section><section class="panel">${radar()}</section><div id="toast" class="notice hidden"></div>`}
+function settings(){return `${head('НАСТРОЙКИ','Управление личной версией NLS.') }<section class="panel"><h2>ОФОРМЛЕНИЕ</h2><label class="field">Язык интерфейса<select id="lang" class="field"><option>Русский</option><option>English</option><option>한국어</option></select></label><label class="field">Тема<select id="theme" class="field"><option>Фиолетовый</option><option>Тёмная</option></select></label><button class="btn full" onclick="saveSettings()">Сохранить настройки</button></section><section class="panel"><h2>ЛОКАЛЬНЫЕ ДАННЫЕ</h2><div class="tiny">Прогресс хранится в памяти браузера на этом устройстве. Очистка данных сайта или браузера может удалить сохранение. Экспортируй резервную копию.</div><div class="row" style="margin-top:12px"><button class="btn secondary grow" onclick="exportData()">Экспорт данных</button><label class="btn secondary grow" style="text-align:center">Импорт данных<input type="file" accept="application/json" hidden onchange="importData(event)"></label></div><button class="btn danger full" style="margin-top:10px" onclick="resetAll()">Сбросить весь прогресс</button></section><div id="toast" class="notice hidden"></div>`}
+function menu(){return `${head('МЕНЮ','Дополнительные разделы системы.') }<section class="panel grid2">${[['stats','Статистика','▦'],['settings','Настройки','⚙'],['balance','Баланс и история','◉'],['about','О системе','✦']].map(x=>`<button class="btn secondary" onclick="go('${x[0]}')">${x[2]} ${x[1]}</button>`).join('')}</section>`}
+function balance(){return `${head('БАЛАНС','История операций с виртуальными кредитами.') }<section class="panel"><div class="currency"><div><b>${state.cr}</b><small>ТЕКУЩИЙ БАЛАНС CR</small></div></div>${state.history.length?state.history.slice().reverse().map(h=>`<div class="row between item"><span>${esc(h.label)}<div class="tiny">${new Date(h.date).toLocaleString()}</div></span><b style="color:${h.amount>=0?'#c8a6f2':'#e5a5b7'}">${h.amount>0?'+':''}${h.amount} CR</b></div>`).join(''):'<div class="empty">Операций пока нет.</div>'}</section>`}
+function about(){return `${head('О СИСТЕМЕ','NEW LIFE SYSTEM · версия 0.3') }<section class="panel"><p>Это личная локальная версия NLS. Данные не отправляются на сервер и не синхронизируются между устройствами.</p><p>Работают: профиль, локальное сохранение, ежедневные задания, начисление XP и CR, уровни, ранги, очки характеристик, магазин, инвентарь, история баланса, экспорт и импорт сохранения.</p><p class="tiny">Пока не подключены: облачная синхронизация, проверка доказательств, реальные чаты, социальные функции, серверные события и автоматическая выдача заданий по расписанию.</p></section>`}
+function render(){let v={home,tasks:taskPage,shop,inventory,profile,stats:statsPage,settings,menu,balance,about}[page]||home;document.getElementById('view').innerHTML=v();document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));if(page==='settings'){document.getElementById('lang').value=state.settings.language;document.getElementById('theme').value=state.settings.theme}}
+function go(p){page=p;render();window.scrollTo(0,0)}
+document.getElementById('nav').addEventListener('click',e=>{let b=e.target.closest('button[data-page]');if(b)go(b.dataset.page)});
+function completeTask(id){if(state.completed.includes(id))return;let t=tasks.find(x=>x.id===id);if(!t)return;state.completed.push(id);state.cr+=t.cr;addXP(t.xp);state.history.push({label:'Награда: '+t.name,amount:t.cr,date:new Date().toISOString()});save();render();toast(`Получено ${t.xp} XP и ${t.cr} CR`)}
+function resetDaily(){if(!confirm('Сбросить отметки всех ежедневных заданий? Награды повторно не начисляются.'))return;state.completed=[];save();render()}
+function buy(id){let g=goods.find(x=>x.id===id);if(!g||state.cr<g.price){toast('Недостаточно CR');return}state.cr-=g.price;state.history.push({label:'Покупка: '+g.name,amount:-g.price,date:new Date().toISOString()});let it=state.inventory.find(x=>x.id===id);if(it)it.qty++;else state.inventory.push({...g,qty:1});save();render();toast('Предмет добавлен в инвентарь')}
+function useItem(id){let it=state.inventory.find(x=>x.id===id);if(!it)return;if(it.effect==='xp'){addXP(5);toast('Получено 5 XP')}else{toast('Этот предмет пока коллекционный или его эффект ещё не реализован');return}it.qty--;if(it.qty<=0)state.inventory=state.inventory.filter(x=>x.id!==id);save();render()}
+function allocate(k){if(state.statPoints<1||state.stats[k]>=100)return;state.statPoints--;state.stats[k]++;save();render()}
+async function saveProfile(){let n=document.getElementById('nameInput').value.trim(),id=document.getElementById('idInput').value.trim(),f=document.getElementById('photoInput').files[0];if(!n||!id){toast('Имя и ID не должны быть пустыми');return}state.name=n;state.id=id;if(f){if(f.size>2*1024*1024){toast('Фото должно быть меньше 2 МБ');return}let data=await new Promise((res,rej)=>{let r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});state.avatar=data}save();render();toast('Профиль сохранён')}
+function saveSettings(){state.settings.language=document.getElementById('lang').value;state.settings.theme=document.getElementById('theme').value;save();toast('Настройки сохранены')}
+function exportData(){let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='nls-save.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.stats||!x.level)throw 0;state={...defaults,...x,stats:{...defaults.stats,...x.stats}};save();render();toast('Сохранение импортировано')}catch(_){toast('Файл сохранения не распознан')}};r.readAsText(f)}
+function resetAll(){if(!confirm('Удалить весь локальный прогресс без возможности восстановления? Сначала сделай экспорт.'))return;state=structuredClone(defaults);save();go('home')}
+render();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
 </body></html>
