@@ -1,0 +1,17 @@
+{
+  "name": "NEW LIFE SYSTEM",
+  "short_name": "NLS",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#090611",
+  "theme_color": "#10091d",
+  "description": "Personal life progression system",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

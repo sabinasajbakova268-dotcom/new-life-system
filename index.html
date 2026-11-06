@@ -31,6 +31,25 @@ h1{font-size:22px;font-weight:500;letter-spacing:.08em;margin:0 0 12px}h2{font-s
 .proofbox{background:#0d0815;border:1px solid #62477c;border-radius:10px;padding:12px;margin:10px 0}
 
 @media(min-width:600px){.grid2{grid-template-columns:repeat(3,1fr)}.tabs{grid-template-columns:repeat(7,1fr)}}
+
+.creator-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.creator-preview{min-height:220px;border:1px solid #76549b;border-radius:18px;background:radial-gradient(circle at 50% 30%,#56366f,#1a1027 62%,#0b0712);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.creator-person{width:116px;height:190px;position:relative;filter:drop-shadow(0 0 16px #9b68db66)}
+.creator-person .hair{position:absolute;left:24px;top:7px;width:68px;height:78px;border-radius:48% 48% 38% 38%;background:var(--hair,#30213b);z-index:2}
+.creator-person .face{position:absolute;left:32px;top:25px;width:52px;height:62px;border-radius:42% 42% 48% 48%;background:linear-gradient(110deg,#f3d4c5,#c9948e);z-index:3}
+.creator-person .eyes{position:absolute;left:39px;top:51px;width:38px;height:5px;border-left:7px solid #302039;border-right:7px solid #302039;z-index:4}
+.creator-person .body{position:absolute;left:14px;top:91px;width:88px;height:92px;border-radius:38px 38px 12px 12px;background:linear-gradient(110deg,#21152f,#76518e,#21152f);border:1px solid #b99bdb;z-index:1}
+.creator-person .hairfront{position:absolute;left:31px;top:18px;width:55px;height:28px;border-radius:50% 50% 15% 15%;background:var(--hair,#30213b);z-index:5}
+.choice-row{display:flex;flex-wrap:wrap;gap:8px}
+.choice-chip{border:1px solid #63477e;border-radius:12px;padding:9px 12px;background:#1a1227;color:#eee5f8}
+.choice-chip.selected{border-color:#d1a9ff;background:#38234f;box-shadow:0 0 12px #a66ee755}
+.field select,.field input{width:100%;margin-top:6px}
+.trial-option{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border:1px solid #5c4277;border-radius:13px;background:#1b1428;color:#f0e8f8}
+.trial-option:focus,.trial-option:hover{border-color:#c39aff;background:#2a1c3d}
+.class-card{padding:13px;border:1px solid #755394;border-radius:15px;background:linear-gradient(145deg,#21152f,#100b19);margin:8px 0}
+.class-card.selected{border-color:#d9b7ff;box-shadow:0 0 16px #a56ee766}
+@media(max-width:440px){.creator-grid{grid-template-columns:1fr}.creator-preview{min-height:190px}}
+
 </style>
 </head>
 <body>
@@ -52,7 +71,7 @@ const defaults={
  name:'Игрок',id:'NLS-000001',avatar:'',character:{name:'Безымянный',class:'Странник',origin:'Неизвестные земли',portrait:'portrait1',created:false},level:1,xp:0,cr:0,statPoints:0,
  stats:{strength:0,intelligence:0,agility:0,endurance:0,discipline:0,concentration:0},
  completed:[],inventory:[],history:[],settings:{language:'Русский',theme:'Фиолетовый'},lastDaily:'',
- character:{name:'Астра',hunger:85,thirst:85,energy:90,hygiene:90,health:100,lastTick:Date.now(),rotation:0,equipped:{head:null,body:null,weapon:null,artifact:null},proofs:[]}
+ character:{name:'Астра',hunger:85,thirst:85,energy:90,hygiene:90,health:100,lastTick:Date.now(),rotation:0,equipped:{head:null,body:null,weapon:null,artifact:null},proofs:[],created:false,face:'Мягкие черты',hair:'Волнистые до плеч',hairColor:'#30213b',eyeColor:'Тёмно-карие',age:18,height:165,origin:'Человек',class:'',secondaryClass:'',secondaryClassUsed:false,trialDone:false,trialAnswers:[],suggestedClasses:[]}
 };
 let state;
 try{state={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')};state.stats={...defaults.stats,...(state.stats||{})};state.settings={...defaults.settings,...(state.settings||{})};state.character={...defaults.character,...(state.character||{})};state.character.equipped={...defaults.character.equipped,...(state.character?.equipped||{})}}catch(e){state=structuredClone(defaults)}
@@ -100,17 +119,106 @@ function tickCharacter(){let c=state.character,now=Date.now(),hours=Math.max(0,M
 function shop(){return `${head('МАГАЗИН','Предметы для тебя и твоего персонажа.') }<div class="currency"><div><b>${state.cr}</b><small>ТВОЙ БАЛАНС · CR</small></div></div><section class="panel">${goods.map(g=>`<div class="item"><div class="row">${art(g)}<div class="item-info"><div class="row between"><h3>${g.name}</h3><span class="pill">${g.rarity}</span></div><div class="tiny">${g.desc}</div><div class="tiny">${g.target==='character'?'Для персонажа':'Для игрока'}</div></div></div><div class="item-actions"><span class="reward">${g.price} CR</span><button class="btn" onclick="buy('${g.id}')">Купить</button></div></div>`).join('')}</section><div id="toast" class="notice hidden"></div>`}
 function inventory(){let items=state.inventory;return `${head('ИНВЕНТАРЬ','Предметы, экипировка и расходники.') }<section class="panel">${items.length?items.map((it,i)=>`<div class="item"><div class="row">${art(it)}<div class="item-info"><div class="row between"><h3>${esc(it.name)}</h3><span class="pill">${esc(it.rarity)}</span></div><div class="tiny">${esc(it.desc)}</div><div class="tiny">Количество: ${it.qty}</div></div></div><div class="item-actions">${it.kind==='equipment'?`<button class="btn" onclick="equipItem('${it.id}')">${state.character.equipped[it.slot]?.id===it.id?'Надето':'Надеть'}</button>`:it.kind==='consumable'?`<button class="btn" onclick="useItem('${it.id}')">Использовать</button>`:'<span class="tiny">Коллекция</span>'}</div></div>`).join(''):'<div class="empty">Инвентарь пока пуст.<br>Загляни в магазин за первым предметом.</div>'}</section><div id="toast" class="notice hidden"></div>`}
 function profile(){return `${head('ПРОФИЛЬ','Персональные данные игрока.') }<section class="panel"><div class="row">${avatar()}<div class="grow"><div class="name">${esc(state.name)}</div><div class="tiny">${esc(state.id)}</div><span class="tag">${rank(state.level)}</span></div></div><label class="field">Имя игрока<input id="nameInput" maxlength="28" value="${esc(state.name)}"></label><label class="field">ID игрока<input id="idInput" maxlength="24" value="${esc(state.id)}"></label><label class="field">Фотография профиля<input id="photoInput" type="file" accept="image/*"></label><button class="btn full" onclick="saveProfile()">Сохранить профиль</button><div class="tiny" style="margin-top:8px">Фотография хранится только в локальных данных этого браузера.</div></section><section class="panel"><h2>ТВОЙ ПЕРСОНАЖ</h2><div class="row"><img class="charhero" src="assets/${state.character?.portrait||'portrait1'}.webp"><div class="grow"><b>${esc(state.character?.name||'Безымянный')}</b><div class="tiny">${esc(state.character?.class||'Странник')} · ${esc(state.character?.origin||'Неизвестные земли')}</div><button class="btn" style="margin-top:10px" onclick="go('character')">Создать / изменить персонажа</button></div></div></section><section class="panel"><h2>УРОВЕНЬ И РАНГ</h2><div class="row between"><span>Уровень</span><b>${state.level} / 100</b></div><div class="row between"><span>Ранг</span><b>${rank(state.level)}</b></div>${bar()}</section><div id="toast" class="notice hidden"></div>`}
-function characterPage(){let c=state.character||defaults.character;selectedPortrait=c.portrait||'portrait1';let portraits=['portrait1','portrait2','portrait3'];return `${head('СОЗДАНИЕ ПЕРСОНАЖА','Создай героя, от имени которого будешь проходить путь NLS.') }<section class="panel"><div class="row"><img class="charhero" id="charPreview" src="assets/${c.portrait||'portrait1'}.webp"><div class="grow"><h2>ОБРАЗ ПЕРСОНАЖА</h2><div class="tiny">Выбери портрет, класс и имя. Позже добавим больше вариантов внешности и экипировку.</div></div></div><h2 style="margin-top:16px">ВЫБЕРИ ПОРТРЕТ</h2><div class="grid2">${portraits.map(p=>`<img class="portrait-choice ${(c.portrait||'portrait1')===p?'selected':''}" src="assets/${p}.webp" onclick="selectPortrait('${p}')">`).join('')}</div><label class="field">Имя персонажа<input id="charName" maxlength="28" value="${esc(c.name||'')}"></label><label class="field">Класс персонажа<select id="charClass"><option ${c.class==='Странник'?'selected':''}>Странник</option><option ${c.class==='Воин'?'selected':''}>Воин</option><option ${c.class==='Маг'?'selected':''}>Маг</option><option ${c.class==='Следопыт'?'selected':''}>Следопыт</option><option ${c.class==='Стратег'?'selected':''}>Стратег</option><option ${c.class==='Хранитель'?'selected':''}>Хранитель</option></select></label><label class="field">Происхождение<input id="charOrigin" maxlength="32" value="${esc(c.origin||'Неизвестные земли')}"></label><button class="btn full" onclick="saveCharacter()">Сохранить персонажа</button><div class="tiny" style="margin-top:8px">Класс пока задаёт образ и описание персонажа, но не меняет характеристики и награды.</div></section><div id="toast" class="notice hidden"></div>`}
-let selectedPortrait='portrait1';
-function selectPortrait(p){selectedPortrait=p;document.querySelectorAll('.portrait-choice').forEach(x=>x.classList.toggle('selected',x.src.includes(p+'.webp')));let preview=document.getElementById('charPreview');if(preview)preview.src='assets/'+p+'.webp'}
-function saveCharacter(){let n=document.getElementById('charName').value.trim(),o=document.getElementById('charOrigin').value.trim();if(!n){toast('Введи имя персонажа');return}state.character={name:n,class:document.getElementById('charClass').value,origin:o||'Неизвестные земли',portrait:selectedPortrait,created:true};save();render();toast('Персонаж сохранён')}
+
+const ORIGINS=[
+ {name:'Человек',desc:'Универсальность, адаптация и сбалансированное развитие.',bonus:'Небольшой бонус ко всем направлениям'},
+ {name:'Эльф',desc:'Чуткость к магии, природе и дальнему бою.',bonus:'Интеллект и ловкость'},
+ {name:'Тёмный эльф',desc:'Скрытность, точность и сопротивление тьме.',bonus:'Ловкость и концентрация'},
+ {name:'Полукровка',desc:'Гибкость и способность сочетать разные подходы.',bonus:'Дисциплина и адаптация'}
+];
+const CLASS_INFO={
+ 'Рыцарь':{desc:'Защита, стойкость и ближний бой.',skills:'Стойка защиты · Ответный удар',stats:['Сила','Выносливость']},
+ 'Маг':{desc:'Магическая сила, знания и контроль энергии.',skills:'Искра маны · Магический барьер',stats:['Интеллект','Концентрация']},
+ 'Ассасин':{desc:'Скорость, скрытность и точечные атаки.',skills:'Теневой шаг · Метка цели',stats:['Ловкость','Концентрация']},
+ 'Лучник':{desc:'Меткость, наблюдательность и дистанционный бой.',skills:'Прицельный выстрел · Орлиный взгляд',stats:['Ловкость','Интеллект']},
+ 'Целитель':{desc:'Восстановление, поддержка и защита союзников.',skills:'Малое исцеление · Спокойствие',stats:['Интеллект','Выносливость']},
+ 'Призыватель':{desc:'Призыв существ и управление помощниками.',skills:'Дух-компаньон · Связь призыва',stats:['Интеллект','Дисциплина']}
+};
+function characterPage(){
+ let c=state.character||defaults.character;
+ if(c.trialDone && c.class) return `${head('ТВОЙ ПЕРСОНАЖ','Пробуждение завершено. Основной класс постоянный.') }
+ <section class="panel"><div class="row between"><h2>${esc(c.name)}</h2><span class="tag">ПРОБУЖДЁН</span></div>
+ <div class="creator-preview"><div class="creator-person" style="--hair:${esc(c.hairColor)}"><div class="hair"></div><div class="face"></div><div class="eyes"></div><div class="hairfront"></div><div class="body"></div></div></div>
+ <div class="grid2"><div class="item"><span class="tiny">ПРОИСХОЖДЕНИЕ</span><b>${esc(c.origin)}</b></div><div class="item"><span class="tiny">ОСНОВНОЙ КЛАСС</span><b>${esc(c.class)}</b></div></div>
+ <p class="tiny">${esc(CLASS_INFO[c.class]?.desc||'')}</p>
+ <div class="item"><b>Начальные навыки</b><div class="tiny">${esc(CLASS_INFO[c.class]?.skills||'')}</div></div>
+ <div class="notice">Основной класс нельзя сменить. Один дополнительный класс можно открыть только один раз — за особое сложное задание.</div>
+ ${c.secondaryClass?`<div class="class-card"><b>Дополнительный класс: ${esc(c.secondaryClass)}</b><div class="tiny">Получен за особое испытание.</div></div>`:`<button class="btn secondary full" onclick="showSecondaryQuest()">Условия второго класса</button>`}
+ <button class="btn full" onclick="go('companion')">Состояние и забота о персонаже</button></section>
+ <div id="toast" class="notice hidden"></div>`;
+ let colors=['#30213b','#17131e','#593a48','#76516f','#b7a0c8','#8a5a36'];
+ return `${head('СОЗДАНИЕ ПЕРСОНАЖА','Сначала создай внешность и выбери происхождение. Класс определит испытание.') }
+ <section class="panel"><div class="row between"><h2>ПРЕДПРОСМОТР</h2><span class="pill">ШАГ 1 / 3</span></div>
+ <div class="creator-preview"><div class="creator-person" id="creatorFigure" style="--hair:${esc(c.hairColor||'#30213b')}"><div class="hair"></div><div class="face"></div><div class="eyes"></div><div class="hairfront"></div><div class="body"></div></div></div>
+ <div class="tiny" style="text-align:center">Внешность можно будет менять позже. Класс и происхождение влияют на способности.</div></section>
+ <section class="panel"><h2>ВНЕШНОСТЬ И ДАННЫЕ</h2>
+ <label class="field">Имя персонажа<input id="charName" maxlength="28" value="${esc(c.name==='Астра'?'':c.name||'')}" placeholder="Например, Астра"></label>
+ <div class="creator-grid">
+ <label class="field">Лицо<select id="charFace"><option>Мягкие черты</option><option>Строгие черты</option><option>Острые черты</option><option>Юные черты</option></select></label>
+ <label class="field">Причёска<select id="charHair"><option>Волнистые до плеч</option><option>Длинные прямые</option><option>Короткие</option><option>Высокий хвост</option><option>Коса</option></select></label>
+ <label class="field">Возраст<input id="charAge" type="number" min="16" max="100" value="${c.age||18}"></label>
+ <label class="field">Рост, см<input id="charHeight" type="number" min="100" max="230" value="${c.height||165}"></label>
+ <label class="field">Цвет глаз<select id="charEyes"><option>Тёмно-карие</option><option>Серые</option><option>Голубые</option><option>Зелёные</option><option>Фиолетовые</option><option>Золотые</option></select></label>
+ </div>
+ <div class="field">Цвет волос<div class="choice-row" id="hairColors">${colors.map(col=>`<button class="choice-chip ${col===(c.hairColor||'#30213b')?'selected':''}" style="width:34px;height:34px;background:${col};padding:0" onclick="pickHair('${col}',this)" aria-label="Выбрать цвет волос"></button>`).join('')}</div></div>
+ </section>
+ <section class="panel"><div class="row between"><h2>ПРОИСХОЖДЕНИЕ</h2><span class="pill">СВОБОДНЫЙ ВЫБОР</span></div>
+ <div class="tiny">Обычные происхождения доступны сразу. Редкие можно получить только за специальные задания и достижения.</div>
+ <div id="originChoices">${ORIGINS.map((o,i)=>`<button class="trial-option ${o.name===(c.origin||'Человек')?'selected':''}" onclick="pickOrigin('${o.name}',this)"><b>${o.name}</b><div class="tiny">${o.desc}</div><div class="tiny">Особенность: ${o.bonus}</div></button>`).join('')}</div>
+ <div class="notice">Редкие происхождения закрыты: Драконья кровь, Демоническое, Духовное и другие — откроются через особые задания.</div>
+ <button class="btn full" onclick="saveAppearance()">Сохранить внешность и перейти к испытанию</button></section><div id="toast" class="notice hidden"></div>`;
+}
+let selectedHair='#30213b', selectedOrigin='Человек';
+function pickHair(col,el){selectedHair=col;document.querySelectorAll('#hairColors .choice-chip').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');let f=document.getElementById('creatorFigure');if(f)f.style.setProperty('--hair',col)}
+function pickOrigin(origin,el){selectedOrigin=origin;document.querySelectorAll('#originChoices .trial-option').forEach(x=>x.classList.remove('selected'));el.classList.add('selected')}
+function saveAppearance(){
+ let c=state.character,n=document.getElementById('charName').value.trim(),age=+document.getElementById('charAge').value,height=+document.getElementById('charHeight').value;
+ if(!n){toast('Сначала введи имя персонажа');return}
+ if(age<16||age>100||height<100||height>230){toast('Проверь возраст и рост');return}
+ c.name=n;c.face=document.getElementById('charFace').value;c.hair=document.getElementById('charHair').value;c.hairColor=selectedHair;c.eyeColor=document.getElementById('charEyes').value;c.age=age;c.height=height;c.origin=selectedOrigin;c.created=true;save();go('awakening');
+}
+const TRIALS=[
+ {title:'Сюжетное испытание',q:'Ты находишь незнакомца, который просит о помощи, но вокруг может быть ловушка. Что сделаешь?',a:[['Помогу, но сначала оценю опасность.','Рыцарь'],['Попробую понять скрытую причину происходящего.','Маг'],['Останусь незаметным и изучу ситуацию.','Ассасин'],['Найду безопасный путь и прослежу за окружением.','Лучник'],['Сначала проверю состояние незнакомца.','Целитель'],['Попробую установить контакт с местными духами.','Призыватель']]},
+ {title:'Психологическое испытание',q:'Что для тебя важнее в сложной ситуации?',a:[['Защитить тех, кто рядом.','Рыцарь'],['Найти закономерность и решение.','Маг'],['Действовать быстро и незаметно.','Ассасин'],['Сохранять дистанцию и точность.','Лучник'],['Поддержать и восстановить силы.','Целитель'],['Использовать помощь союзников.','Призыватель']]},
+ {title:'Тактическое испытание',q:'Перед тобой несколько противников и мало времени. Какой подход выберешь?',a:[['Принять удар и удержать позицию.','Рыцарь'],['Использовать контроль и силу энергии.','Маг'],['Обойти с фланга и ударить по уязвимости.','Ассасин'],['Занять высоту и выбрать цель.','Лучник'],['Укрепить команду и переждать натиск.','Целитель'],['Отвлечь врагов призванным помощником.','Призыватель']]},
+ {title:'Практическое испытание',q:'Какой навык ты хотела бы развивать в первую очередь?',a:[['Выносливость и силу.','Рыцарь'],['Знания и управление энергией.','Маг'],['Скорость и ловкость.','Ассасин'],['Меткость и наблюдательность.','Лучник'],['Исцеление и поддержку.','Целитель'],['Связь с существами и контроль.','Призыватель']]}
+];
+let trialStep=0,trialScores={}; selectedHair=state.character.hairColor||'#30213b'; selectedOrigin=state.character.origin||'Человек';
+function awakeningPage(){
+ let c=state.character;
+ if(!c.created)return `${head('ПРОБУЖДЕНИЕ','Сначала создай персонажа.') }<section class="panel"><button class="btn full" onclick="go('character')">К созданию персонажа</button></section>`;
+ if(c.trialDone)return `${head('ПРОБУЖДЕНИЕ ЗАВЕРШЕНО','Основной класс уже закреплён за персонажем.') }<section class="panel"><h2>${esc(c.class)}</h2><p class="tiny">Сменить основной класс нельзя.</p><button class="btn full" onclick="go('character')">К персонажу</button></section>`;
+ let t=TRIALS[trialStep];
+ return `${head('ИСПЫТАНИЕ ПРОБУЖДЕНИЯ','Сюжет · характер · тактика · практика') }
+ <section class="panel"><div class="row between"><h2>${t.title.toUpperCase()}</h2><span class="pill">${trialStep+1} / ${TRIALS.length}</span></div>
+ <p>${t.q}</p>${t.a.map((a,i)=>`<button class="trial-option" onclick="answerTrial('${a[1]}')">${a[0]}</button>`).join('')}
+ <div class="tiny">Ответы формируют профиль склонностей. Это не тест с правильными и неправильными ответами.</div></section><div id="toast" class="notice hidden"></div>`;
+}
+function answerTrial(cls){
+ trialScores[cls]=(trialScores[cls]||0)+1;state.character.trialAnswers=state.character.trialAnswers||[];state.character.trialAnswers[trialStep]=cls;trialStep++;
+ if(trialStep<TRIALS.length){save();render();return}
+ let ranked=Object.entries(trialScores).sort((a,b)=>b[1]-a[1]).map(x=>x[0]);
+ let all=Object.keys(CLASS_INFO);while(ranked.length<3)ranked.push(...all.filter(x=>!ranked.includes(x)));
+ state.character.suggestedClasses=ranked.slice(0,3);save();go('classresult');
+}
+function classResultPage(){
+ let c=state.character,choices=c.suggestedClasses||[];
+ return `${head('ПРОБУЖДЕНИЕ КЛАССА','Система завершила анализ. Выбери один из предложенных классов.') }
+ <section class="panel"><div class="tag">РЕЗУЛЬТАТ ИСПЫТАНИЯ</div><h2>СИСТЕМА ПРЕДЛАГАЕТ ТРИ ПУТИ</h2>${choices.map((cl,i)=>`<button class="trial-option class-card" onclick="selectMainClass('${cl}',this)"><div class="row between"><b>${cl}</b><span class="pill">ВАРИАНТ ${i+1}</span></div><div class="tiny">${CLASS_INFO[cl].desc}</div><div class="tiny">Начальные навыки: ${CLASS_INFO[cl].skills}</div><div class="tiny">Сильные стороны: ${CLASS_INFO[cl].stats.join(' · ')}</div></button>`).join('')}
+ <div class="notice">После подтверждения основной класс станет постоянным. Его нельзя будет сменить.</div></section><div id="toast" class="notice hidden"></div>`;
+}
+function selectMainClass(cl){if(!state.character.suggestedClasses.includes(cl)||state.character.trialDone)return;if(!confirm(`Закрепить класс «${cl}» навсегда? Сменить его будет нельзя.`))return;state.character.class=cl;state.character.trialDone=true;state.character.skills=[...(CLASS_INFO[cl]?.skills||'').split(' · ')];save();go('character');toast('Класс пробуждён и закреплён')}
+function showSecondaryQuest(){alert('Особое задание второго класса ещё не открыто. Оно появится после выполнения условий прогресса и специальной сюжетной цепочки. Получить дополнительный класс можно только один раз.')}
+function companionPage(){return `${head('СПУТНИК','Забота о персонаже и его состоянии.') }<section class="panel"><div class="row between"><h2>${esc(state.character.name)}</h2><span class="pill">УРОВЕНЬ ${state.level}</span></div><div class="creator-preview"><div class="creator-person" style="--hair:${esc(state.character.hairColor||'#30213b')}"><div class="hair"></div><div class="face"></div><div class="eyes"></div><div class="hairfront"></div><div class="body"></div></div></div><p class="tiny">${esc(state.character.origin||'Происхождение не выбрано')} · ${esc(state.character.class||'Класс не пробуждён')}</p>
+ ${[['Здоровье','health'],['Голод','hunger'],['Жажда','thirst'],['Энергия','energy'],['Гигиена','hygiene']].map(([n,k])=>`<div class="need"><div class="statline"><span>${n}</span><b>${state.character[k]}%</b></div><div class="bar"><i style="width:${state.character[k]}%"></i></div></div>`).join('')}
+ <div class="notice">Потребности меняются со временем, пока приложение закрыто, по расчёту времени между запусками. Это игровые показатели; персонаж не умирает.</div><button class="btn secondary full" onclick="go('shop')">Магазин заботы и экипировки</button></section>`}
 
 function statsPage(){let names={strength:'Сила',intelligence:'Интеллект',agility:'Ловкость',endurance:'Выносливость',discipline:'Дисциплина',concentration:'Концентрация'};return `${head('СТАТИСТИКА','Развивай характеристики, распределяя заработанные очки.') }<div class="notice">За каждый новый уровень начисляется 2 очка. Начальные значения оставлены нулевыми — ты сама решаешь, куда направить развитие.</div><section class="panel"><div class="row between"><h2>ДОСТУПНО ОЧКОВ</h2><b style="color:#e0c2ff;font-size:22px">${state.statPoints}</b></div>${Object.entries(names).map(([k,n])=>`<div class="row between stat" style="margin:7px 0"><div><b>${state.stats[k]}</b><span>${n}</span></div><button class="btn secondary" ${state.statPoints<1||state.stats[k]>=100?'disabled':''} onclick="allocate('${k}')">+1</button></div>`).join('')}</section><section class="panel">${radar()}</section><div id="toast" class="notice hidden"></div>`}
 function settings(){return `${head('НАСТРОЙКИ','Управление личной версией NLS.') }<section class="panel"><h2>ОФОРМЛЕНИЕ</h2><label class="field">Язык интерфейса<select id="lang" class="field"><option>Русский</option><option>English</option><option>한국어</option></select></label><label class="field">Тема<select id="theme" class="field"><option>Фиолетовый</option><option>Тёмная</option></select></label><button class="btn full" onclick="saveSettings()">Сохранить настройки</button></section><section class="panel"><h2>ЛОКАЛЬНЫЕ ДАННЫЕ</h2><div class="tiny">Прогресс хранится в памяти браузера на этом устройстве. Очистка данных сайта или браузера может удалить сохранение. Экспортируй резервную копию.</div><div class="row" style="margin-top:12px"><button class="btn secondary grow" onclick="exportData()">Экспорт данных</button><label class="btn secondary grow" style="text-align:center">Импорт данных<input type="file" accept="application/json" hidden onchange="importData(event)"></label></div><button class="btn danger full" style="margin-top:10px" onclick="resetAll()">Сбросить весь прогресс</button></section><div id="toast" class="notice hidden"></div>`}
-function menu(){return `${head('МЕНЮ','Дополнительные разделы системы.') }<section class="panel grid2">${[['stats','Статистика','▦'],['settings','Настройки','⚙'],['balance','Баланс и история','◉'],['about','О системе','✦'],['character','Персонаж','♙']].map(x=>`<button class="btn secondary" onclick="go('${x[0]}')">${x[2]} ${x[1]}</button>`).join('')}</section>`}
+function menu(){return `${head('МЕНЮ','Дополнительные разделы системы.') }<section class="panel grid2">${[['stats','Статистика','▦'],['settings','Настройки','⚙'],['balance','Баланс и история','◉'],['about','О системе','✦'],['character','Создание персонажа','♙'],['awakening','Испытание класса','✧'],['companion','Состояние персонажа','♡']].map(x=>`<button class="btn secondary" onclick="go('${x[0]}')">${x[2]} ${x[1]}</button>`).join('')}</section>`}
 function balance(){return `${head('БАЛАНС','История операций с виртуальными кредитами.') }<section class="panel"><div class="currency"><div><b>${state.cr}</b><small>ТЕКУЩИЙ БАЛАНС CR</small></div></div>${state.history.length?state.history.slice().reverse().map(h=>`<div class="row between item"><span>${esc(h.label)}<div class="tiny">${new Date(h.date).toLocaleString()}</div></span><b style="color:${h.amount>=0?'#c8a6f2':'#e5a5b7'}">${h.amount>0?'+':''}${h.amount} CR</b></div>`).join(''):'<div class="empty">Операций пока нет.</div>'}</section>`}
-function about(){return `${head('О СИСТЕМЕ','NEW LIFE SYSTEM · версия 0.3') }<section class="panel"><p>Это личная локальная версия NLS. Данные не отправляются на сервер и не синхронизируются между устройствами.</p><p>Работают: профиль, локальное сохранение, ежедневные задания, начисление XP и CR, уровни, ранги, очки характеристик, магазин, инвентарь, история баланса, экспорт и импорт сохранения.</p><p class="tiny">Пока не подключены: облачная синхронизация, проверка доказательств, реальные чаты, социальные функции, серверные события и автоматическая выдача заданий по расписанию.</p></section>`}
-function render(){let v={home,tasks:taskPage,shop,inventory,character:characterPage,profile,stats:statsPage,settings,menu,balance,about,character:characterPage}[page]||home;document.getElementById('view').innerHTML=v();document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));if(page==='settings'){document.getElementById('lang').value=state.settings.language;document.getElementById('theme').value=state.settings.theme}}
+function about(){return `${head('О СИСТЕМЕ','NEW LIFE SYSTEM · версия 0.5') }<section class="panel"><p>Это личная локальная версия NLS. Данные не отправляются на сервер и не синхронизируются между устройствами.</p><p>Работают: профиль, локальное сохранение, ежедневные задания, начисление XP и CR, уровни, ранги, очки характеристик, магазин, инвентарь, история баланса, экспорт и импорт сохранения.</p><p class="tiny">Пока не подключены: облачная синхронизация, проверка доказательств, реальные чаты, социальные функции, серверные события и автоматическая выдача заданий по расписанию.</p></section>`}
+function render(){let v={home,tasks:taskPage,shop,inventory,character:characterPage,awakening:awakeningPage,classresult:classResultPage,companion:companionPage,profile,stats:statsPage,settings,menu,balance,about}[page]||home;document.getElementById('view').innerHTML=v();document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));if(page==='settings'){document.getElementById('lang').value=state.settings.language;document.getElementById('theme').value=state.settings.theme}}
 function go(p){page=p;render();window.scrollTo(0,0)}
 document.getElementById('nav').addEventListener('click',e=>{let b=e.target.closest('button[data-page]');if(b)go(b.dataset.page)});
 function completeTask(id){if(state.completed.includes(id))return;let t=tasks.find(x=>x.id===id);if(!t)return;if(!confirm(`Подтверждаешь, что выполнила задание «${t.name}»? Награда будет начислена один раз.`))return;let note=prompt('Краткий отчёт о выполнении (необязательно):','');if(note===null)return;state.completed.push(id);state.character.proofs.push({task:t.name,note:note.trim(),date:new Date().toISOString()});state.cr+=t.cr;addXP(t.xp);state.history.push({label:'Награда: '+t.name,amount:t.cr,date:new Date().toISOString()});save();render();toast(`Получено ${t.xp} XP и ${t.cr} CR`)}
